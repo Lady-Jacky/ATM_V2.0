@@ -3,20 +3,26 @@ package com.example.atm_v2;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class Loading extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("LoadingScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(Loading.class.getResource("LoadingScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Bank of Teyvat");
         stage.setScene(scene);
         stage.show();
+        Parent loginorCreate = FXMLLoader.load(getClass().getResource("CreateLogin.fxml"));
+        Scene scene2 = new Scene(loginorCreate);
+        delay(3000, () -> stage.setScene(scene2));
     }
+
+
 
     //Credits to Dave8 for this delay method:
     // https://stackoverflow.com/questions/26454149/make-javafx-wait-and-continue-with-code
