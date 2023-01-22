@@ -16,7 +16,7 @@
          </font>
       </Text>
       <TextField fx:id="createPass" layoutX="207.0" layoutY="254.0" prefHeight="50.0" prefWidth="308.0" promptText="Choose a Password" style="-fx-background-color: #5e637b; -fx-text-fill: white;" />
-      <Label fx:id="result" layoutX="207.0" layoutY="317.0" prefHeight="57.0" prefWidth="308.0" textFill="#fcfcfc">
+      <Label fx:id="result" layoutX="207.0" layoutY="317.0" prefHeight="57.0" prefWidth="407.0" textFill="#fcfcfc">
          <font>
             <Font name="Bell MT" size="18.0" />
          </font>

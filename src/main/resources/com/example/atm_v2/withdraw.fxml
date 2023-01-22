@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="722.0" snapToPixel="false" style="-fx-background-color: #363754;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.atm_v2.ATM">
+   <children>
+      <Text fill="#f2c8c8" layoutX="224.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Withdraw" underline="true">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="61.0" />
+         </font>
+      </Text>
+      <Label fx:id="amount" layoutX="47.0" layoutY="279.0" prefHeight="32.0" prefWidth="312.0" textFill="WHITE">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="whichAccount" layoutX="149.0" layoutY="188.0" prefHeight="31.0" prefWidth="150.0" />
+      <Text fill="WHITE" layoutX="47.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From:" underline="true" wrappingWidth="91.39844131469727">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+      <Button layoutX="47.0" layoutY="471.0" mnemonicParsing="false" onAction="#back" prefHeight="48.0" prefWidth="91.0" text="Back">
+         <font>
+            <Font name="Book Antiqua" size="26.0" />
+         </font>
+      </Button>
+      <TextField fx:id="totalAmount" layoutX="400.0" layoutY="188.0" prefHeight="48.0" prefWidth="273.0" promptText="Enter total amount (Must be divisible by 5)" style="-fx-background-color: #5e637b; -fx-text-fill: white;" />
+      <TextField fx:id="fives" layoutX="400.0" layoutY="279.0" prefHeight="48.0" prefWidth="273.0" promptText="Enter amount of $5 bills" style="-fx-background-color: #5e637b; -fx-text-fill: white;" />
+      <TextField fx:id="twenties" layoutX="400.0" layoutY="365.0" prefHeight="48.0" prefWidth="273.0" promptText="Enter amount of $20 bills" style="-fx-background-color: #5e637b; -fx-text-fill: white;" />
+      <Button layoutX="536.0" layoutY="468.0" mnemonicParsing="false" onAction="#drawMoney" prefHeight="58.0" prefWidth="150.0" text="Withdraw">
+         <font>
+            <Font name="Book Antiqua" size="25.0" />
+         </font>
+      </Button>
+      <TextField fx:id="confirmPin1" layoutX="203.0" layoutY="473.0" prefHeight="48.0" prefWidth="273.0" promptText="Confirm your Pin" style="-fx-background-color: #5e637b; -fx-text-fill: white;" />
+   </children>
+</AnchorPane>

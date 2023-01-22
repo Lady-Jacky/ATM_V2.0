@@ -15,6 +15,10 @@ public class Account {
         count++;
     }
 
+    public static String getUserPin() {
+        return account[findUser()].getPin();
+    }
+
     public static String getUserSavings() {
         return String.format("%.2f", userSavings[findUser()]);
     }
@@ -32,6 +36,10 @@ public class Account {
         return 0;
     }
 
+    public static void setPin(String newPin) {
+         account[findUser()].setPin(newPin);
+    }
+
     public static boolean checkAvaliability(String username) {
         if (account.length >= 0) {
             for (Customer user : account) {
@@ -46,6 +54,15 @@ public class Account {
         } else {
             return true;
         }
+    }
+
+
+    public static String getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(String user) {
+        currentUser = user;
     }
 
     public static boolean checkInfo(String username, String password) {
@@ -82,23 +99,44 @@ public class Account {
         } else if (checkInfo(username, password) == false) {
             return "Either username or password is wrong.";
         }
-        currentUser = username;
+        setCurrentUser(username);
         return "You are now logged in";
     }
 
-    public static String withdraw(String account, double total, int fives, int twenties) {
-        if (((fives * 5) + (twenties * 20)) != total) {
-            return "The withdrawl requirements are impossible";
+    public static boolean canWithdraw(String account, double total, int fives, int twenties) {
+        if (total % 5 != 0) {
+            return false;
+        } else if (((fives * 5) + (twenties * 20)) != total) {
+            return false;
         }
         if (account.equals("Savings")) {
             if (total > userSavings[findUser()]) {
-                return "Balance of account is insufficient";
+                return false;
+            }
+        } else {
+            if (total > userChecks[findUser()]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static String withdraw(String account, double total, int fives, int twenties) {
+        if (total % 5 != 0) {
+            return "Invalid withdrawl amount";
+        }
+        if (((fives * 5) + (twenties * 20)) != total) {
+            return "Math does not add up";
+        }
+        if (account.equals("Savings")) {
+            if (total > userSavings[findUser()]) {
+                return "Insufficient account funds";
             } else {
                 userSavings[findUser()] -= total;
             }
         } else {
             if (total > userChecks[findUser()]) {
-                return "Balance of account is insufficient";
+                return "Insufficient account funds";
             } else {
                 userChecks[findUser()] -= total;
             }
@@ -106,13 +144,43 @@ public class Account {
         return "";
     }
 
-    public static String deposit(String account, double amount) {
+    public static void deposit(String account, double amount) {
         if (account.equals("Savings")) {
             userSavings[findUser()] += amount;
-            return "Deposit successful";
-        } else {
+        } else if (account.equals("Checks")) {
             userChecks[findUser()] += amount;
-            return "Deposit successful";
         }
+    }
+
+    public static String transfer(String account, double amount) {
+        if (account.equals("Savings")) {
+            if (userSavings[findUser()] >= amount) {
+                deposit("Checks", amount);
+                userSavings[findUser()] -= amount;
+            } else {
+                return "Insufficient Balance";
+            }
+        } else if (account.equals("Checks")) {
+            if (userChecks[findUser()] >= amount) {
+                deposit("Savings", amount);
+                userChecks[findUser()] -= amount;
+            } else {
+                return "Insufficient Balance";
+            }
+        }
+        return "Transfer successful";
+    }
+
+    public static boolean enough(String account, double amount) {
+        if (account.equals("Savings")) {
+            if (userSavings[findUser()] < amount) {
+                return false;
+            }
+        } else if (account.equals("Checks")) {
+            if (userChecks[findUser()] < amount) {
+                return false;
+            }
+        }
+        return true;
     }
 }
