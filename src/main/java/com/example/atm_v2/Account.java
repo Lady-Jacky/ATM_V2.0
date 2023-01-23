@@ -17,21 +17,6 @@ public class Account {
         count++;
     }
 
-    //returns the user's pin
-    public static String getUserPin() {
-        return account[findUser()].getPin();
-    }
-
-    //returns the user's savings balance
-    public static String getUserSavings() {
-        return String.format("%.2f", userSavings[findUser()]);
-    }
-
-    //returns the user's checks balance
-    public static String getUserChecks() {
-        return String.format("%.2f", userChecks[findUser()]);
-    }
-
     //returns the user's index in the acocunt array
     private static int findUser() {
         for (int i = 0; i < account.length; i++) {
@@ -63,15 +48,6 @@ public class Account {
         } else {
             return true;
         }
-    }
-
-//returns the current user
-    public static String getCurrentUser() {
-        return currentUser;
-    }
-//sets the current user
-    public static void setCurrentUser(String user) {
-        currentUser = user;
     }
 //checks the info of the specified user and see if the account that they entered is or is not an actual account
 // that was created
@@ -204,5 +180,28 @@ public class Account {
         transactionID++;
         return "Savings Balance: $" + getUserSavings() + "\nChecks Balance: $" + getUserChecks()
                 + "\nTransaction ID: " + transactionID;
+    }
+
+    //returns the current user
+    public static String getCurrentUser() {
+        return currentUser;
+    }
+    //sets the current user
+    public static void setCurrentUser(String user) {
+        currentUser = user;
+    }
+    //returns the user's pin
+    public static String getUserPin() {
+        return account[findUser()].getPin();
+    }
+
+    //returns the user's savings balance
+    public static String getUserSavings() {
+        return String.format("%.2f", userSavings[findUser()]);
+    }
+
+    //returns the user's checks balance
+    public static String getUserChecks() {
+        return String.format("%.2f", userChecks[findUser()]);
     }
 }

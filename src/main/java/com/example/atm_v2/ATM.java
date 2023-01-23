@@ -250,8 +250,8 @@ public class ATM implements Initializable{
     // their pin as a security measure.
     public void drawMoney(ActionEvent event) throws Exception {
         String choice = whichAccount.getValue();
-        if(Double.parseDouble(totalAmount.getText()) > 0 && Integer.parseInt(twenties.getText()) > 0
-                && Integer.parseInt(fives.getText()) > 0){
+        if(Double.parseDouble(totalAmount.getText()) > 0 && Integer.parseInt(twenties.getText()) >= 0
+                && Integer.parseInt(fives.getText()) >= 0){
             try {
                 if (Account.canWithdraw(choice, Double.parseDouble(totalAmount.getText()),
                         Integer.parseInt(fives.getText()), Integer.parseInt(twenties.getText()))) {
@@ -289,7 +289,7 @@ public class ATM implements Initializable{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Option");
             alert.setHeaderText("Invalid Amount");
-            alert.setContentText("Total amount, amount of $5 bills and $20 bills cannot be negative");
+            alert.setContentText("Total amount, amount of $5 bills and $20 bills cannot be negative and total amount cannot be 0");
             alert.show();
         }
     }
@@ -328,7 +328,7 @@ public class ATM implements Initializable{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Option");
             alert.setHeaderText("Invalid Amount");
-            alert.setContentText("Total Amount cannot be negative");
+            alert.setContentText("Total Amount cannot be negative or 0");
             alert.show();
         }
     }
@@ -382,7 +382,7 @@ public class ATM implements Initializable{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Option");
             alert.setHeaderText("Invalid Amount");
-            alert.setContentText("Amount transferred cannot be negative");
+            alert.setContentText("Amount transferred cannot be negative or 0");
             alert.show();
         }
     }
