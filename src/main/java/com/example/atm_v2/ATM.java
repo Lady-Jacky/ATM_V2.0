@@ -230,7 +230,8 @@ public class ATM implements Initializable{
 
     public void drawMoney(ActionEvent event) throws Exception {
         String choice = whichAccount.getValue();
-        if(Double.parseDouble(totalAmount.getText()) > 0) {
+        if(Double.parseDouble(totalAmount.getText()) > 0 && Integer.parseInt(twenties.getText()) > 0
+                && Integer.parseInt(fives.getText()) > 0){
             try {
                 if (Account.canWithdraw(choice, Double.parseDouble(totalAmount.getText()),
                         Integer.parseInt(fives.getText()), Integer.parseInt(twenties.getText()))) {
@@ -268,7 +269,7 @@ public class ATM implements Initializable{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Option");
             alert.setHeaderText("Invalid Amount");
-            alert.setContentText("Total Amount cannot be negative");
+            alert.setContentText("Total amount, amount of $5 bills and $20 bills cannot be negative");
             alert.show();
         }
     }
@@ -331,34 +332,42 @@ public class ATM implements Initializable{
         } else {
             other = "Savings";
         }
-        if (Account.enough(choice, Double.parseDouble(amountTransferred.getText()))) {
-            try {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Receipt");
-                alert.setHeaderText(Account.transfer(choice, Double.parseDouble(amountTransferred.getText())));
-                alert.setContentText("$" + String.format("%.2f", Double.parseDouble(amountTransferred.getText())) +
-                        " was transfered from " + choice + " to " + other + "\n" + Account.getBal());
-                alert.show();
+        if(Double.parseDouble(amountTransferred.getText()) > 0) {
+            if (Account.enough(choice, Double.parseDouble(amountTransferred.getText()))) {
+                try {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Receipt");
+                    alert.setHeaderText(Account.transfer(choice, Double.parseDouble(amountTransferred.getText())));
+                    alert.setContentText("$" + String.format("%.2f", Double.parseDouble(amountTransferred.getText())) +
+                            " was transfered from " + choice + " to " + other + "\n" + Account.getBal());
+                    alert.show();
 
-                Parent create = FXMLLoader.load(getClass().getResource("confirm.fxml"));
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                scene = new Scene(create);
-                stage.setScene(scene);
-                stage.show();
+                    Parent create = FXMLLoader.load(getClass().getResource("confirm.fxml"));
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    scene = new Scene(create);
+                    stage.setScene(scene);
+                    stage.show();
 
 
-            } catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Option");
+                    alert.setHeaderText("Invalid Amount");
+                    alert.setContentText("Total Amount must be a number");
+                    alert.show();
+                }
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Option");
-                alert.setHeaderText("Invalid Amount");
-                alert.setContentText("Total Amount must be a number");
+                alert.setTitle("Error");
+                alert.setHeaderText("Insufficient Balance");
+                alert.setContentText("Amount transfered much be equal to or less than amount in selected account");
                 alert.show();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Insufficient Balance");
-            alert.setContentText("Amount transfered much be equal to or less than amount in selected account");
+            alert.setTitle("Invalid Option");
+            alert.setHeaderText("Invalid Amount");
+            alert.setContentText("Amount transferred cannot be negative");
             alert.show();
         }
     }
