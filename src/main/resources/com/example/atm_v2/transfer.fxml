@@ -37,6 +37,5 @@
             <Font name="Book Antiqua" size="25.0" />
          </font>
       </Button>
-      <TextField fx:id="transferPin" layoutX="203.0" layoutY="473.0" prefHeight="48.0" prefWidth="273.0" promptText="Enter amount of money" style="-fx-background-color: #5e637b; -fx-text-fill: white;" />
    </children>
 </AnchorPane>

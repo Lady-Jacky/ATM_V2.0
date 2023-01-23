@@ -6,6 +6,7 @@ public class Account {
     private static double[] userChecks = new double[100];
     private static int count = 0;
     private static String currentUser = "";
+    private static int transactionID = 10000;
 
 
     public static void addAccount(Customer thing) {
@@ -182,5 +183,11 @@ public class Account {
             }
         }
         return true;
+    }
+
+    public static String getBal() {
+        transactionID++;
+        return "Savings Balance: $" + getUserSavings() + "\nChecks Balance: $" + getUserChecks()
+                + "\nTransaction ID: " + transactionID;
     }
 }
