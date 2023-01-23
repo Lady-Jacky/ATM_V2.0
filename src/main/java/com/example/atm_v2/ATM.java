@@ -230,16 +230,59 @@ public class ATM implements Initializable{
 
     public void drawMoney(ActionEvent event) throws Exception {
         String choice = whichAccount.getValue();
-        try {
-            if (Account.canWithdraw(choice, Double.parseDouble(totalAmount.getText()),
-                    Integer.parseInt(fives.getText()), Integer.parseInt(twenties.getText()))) {
-                Account.withdraw(choice, Double.parseDouble(totalAmount.getText()),
-                        +Integer.parseInt(fives.getText()), Integer.parseInt(twenties.getText()));
+        if(Double.parseDouble(totalAmount.getText()) > 0) {
+            try {
+                if (Account.canWithdraw(choice, Double.parseDouble(totalAmount.getText()),
+                        Integer.parseInt(fives.getText()), Integer.parseInt(twenties.getText()))) {
+                    Account.withdraw(choice, Double.parseDouble(totalAmount.getText()),
+                            +Integer.parseInt(fives.getText()), Integer.parseInt(twenties.getText()));
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Receipt");
+                    alert.setHeaderText("Withdraw Successful");
+                    alert.setContentText("$" + String.format("%.2f", Double.parseDouble(totalAmount.getText()))
+                            + " was withdrawn from " + choice + "\n" + Account.getBal());
+                    alert.show();
+
+                    Parent create = FXMLLoader.load(getClass().getResource("confirm.fxml"));
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    scene = new Scene(create);
+                    stage.setScene(scene);
+                    stage.show();
+
+                } else {
+                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                    alert2.setTitle("Invalid Option");
+                    alert2.setHeaderText("Invalid Amount");
+                    alert2.setContentText(Account.withdraw(choice, Double.parseDouble(totalAmount.getText()),
+                            +Integer.parseInt(fives.getText()), Integer.parseInt(twenties.getText())));
+                    alert2.show();
+                }
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Option");
+                alert.setHeaderText("Invalid Amount");
+                alert.setContentText("Total Amount, amount of $5 bills, and amount of #20 bills must be a number");
+                alert.show();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Option");
+            alert.setHeaderText("Invalid Amount");
+            alert.setContentText("Total Amount cannot be negative");
+            alert.show();
+        }
+    }
+
+    public void enterMoney(ActionEvent event) throws Exception {
+        String choice = intoWhichAccount.getValue();
+        if(Double.parseDouble(storeAmount.getText()) > 0) {
+            try {
+                Account.deposit(choice, Double.parseDouble(storeAmount.getText()));
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Receipt");
-                alert.setHeaderText("Withdraw Successful");
-                alert.setContentText("$" + String.format("%.2f", Double.parseDouble(totalAmount.getText()))
-                        + " was withdrawn from " + choice + "\n" + Account.getBal());
+                alert.setHeaderText("Deposit Successful");
+                alert.setContentText("$" + String.format("%.2f", Double.parseDouble(storeAmount.getText())) +
+                        " was deposited into " + choice + "\n" + Account.getBal());
                 alert.show();
 
                 Parent create = FXMLLoader.load(getClass().getResource("confirm.fxml"));
@@ -248,46 +291,19 @@ public class ATM implements Initializable{
                 stage.setScene(scene);
                 stage.show();
 
-            } else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setTitle("Invalid Option");
-                alert2.setHeaderText("Invalid Amount");
-                alert2.setContentText(Account.withdraw(choice, Double.parseDouble(totalAmount.getText()),
-                        +Integer.parseInt(fives.getText()), Integer.parseInt(twenties.getText())));
-                alert2.show();
+
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Option");
+                alert.setHeaderText("Invalid Amount");
+                alert.setContentText("Total Amount must be a number");
+                alert.show();
             }
-        } catch (NumberFormatException e) {
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Option");
             alert.setHeaderText("Invalid Amount");
-            alert.setContentText("Total Amount, amount of $5 bills, and amount of #20 bills must be a number");
-            alert.show();
-        }
-    }
-
-    public void enterMoney(ActionEvent event) throws Exception {
-        String choice = intoWhichAccount.getValue();
-        try {
-            Account.deposit(choice, Double.parseDouble(storeAmount.getText()));
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Receipt");
-            alert.setHeaderText("Deposit Successful");
-            alert.setContentText("$" + String.format("%.2f", Double.parseDouble(storeAmount.getText())) +
-                    " was deposited into " + choice + "\n" + Account.getBal());
-            alert.show();
-
-            Parent create = FXMLLoader.load(getClass().getResource("confirm.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(create);
-            stage.setScene(scene);
-            stage.show();
-
-
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Option");
-            alert.setHeaderText("Invalid Amount");
-            alert.setContentText("Total Amount must be a number");
+            alert.setContentText("Total Amount cannot be negative");
             alert.show();
         }
     }
