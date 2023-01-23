@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Loading extends Application {
+    //This is what "runs" the program and decides what it would look like when it is first launched.
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Loading.class.getResource("LoadingScreen.fxml"));
@@ -24,7 +25,7 @@ public class Loading extends Application {
 
 
 
-    //Credits to Dave8 for this delay method:
+    //Credits to Dave8 for this delay method because apparently .wait() and . sleep() dont really work for Java FX:
     // https://stackoverflow.com/questions/26454149/make-javafx-wait-and-continue-with-code
     public static void delay(long millis, Runnable continuation) {
         Task<Void> sleeper = new Task<Void>() {

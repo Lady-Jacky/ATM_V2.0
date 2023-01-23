@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 import static javafx.scene.input.KeyCode.S;
 
 public class ATM implements Initializable{
-    private Stage confirmation;
+//All the instance variables
     private Stage stage;
     private Scene scene;
     @FXML
@@ -37,20 +37,14 @@ public class ATM implements Initializable{
     private Label result;
     @FXML
     private TextField enterPass;
-
     @FXML
     private TextField enterUser;
     @FXML
     private Label result2;
     @FXML
     private TextField newPin;
-
     @FXML
     private TextField oldPin;
-
-//    Label welcome = new Label();
-//    Label savings = new Label();
-//    Label checks = new Label();
     @FXML
     private ChoiceBox<String> whichAccount;
     @FXML
@@ -89,7 +83,8 @@ public class ATM implements Initializable{
     private int trys = 3;
 
 
-
+//Initializes all the Choiceboxes and gives them values based on the String Array "Choices"
+    //Also makes sure that none of the choices boxes and labels will equal null
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         if(whichAccount == null) {
@@ -121,6 +116,7 @@ public class ATM implements Initializable{
         fromAccount.setOnAction(this::getAccount3);
     }
 
+    //Sets the action for what would happen when a choice from whichAccount is selected
     public void getAccount(ActionEvent event) {
         String choice = whichAccount.getValue();
         if (choice.equals("Savings")) {
@@ -129,6 +125,7 @@ public class ATM implements Initializable{
             amount.setText(choice + " account has $" + Account.getUserChecks());
         }
     }
+    //Sets the action for what would happen when a choice from intoWhichAccount is selected
     public void getAccount2(ActionEvent event) {
         String choice = intoWhichAccount.getValue();
         if (choice.equals("Savings")) {
@@ -137,7 +134,7 @@ public class ATM implements Initializable{
             amount.setText(choice + " account has $" + Account.getUserChecks());
         }
     }
-
+    //Sets the action for what would happen when a choice from fromAccount is selected
     public void getAccount3(ActionEvent event) {
         String choice = fromAccount.getValue();
         if (choice.equals("Savings")) {
@@ -147,6 +144,92 @@ public class ATM implements Initializable{
         }
     }
 
+//switches the scene to the scene for creating an account
+    public void createAccount(ActionEvent event) throws IOException {
+        Parent create = FXMLLoader.load(getClass().getResource("createAccount.fxml"));
+        scene = new Scene(create);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    //switches the scene to the scene for returning to the scene that allows you to choose to either long in or create a new account
+    public void returnBack(ActionEvent event) throws Exception {
+        Parent loginorCreate = FXMLLoader.load(getClass().getResource("CreateLogin.fxml"));
+        scene = new Scene(loginorCreate);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+    }
+
+    //switches the scene to the scene for logging into an account
+    public void logIn(ActionEvent event) throws Exception {
+        Parent menu = FXMLLoader.load(getClass().getResource("loggingIn.fxml"));
+        scene = new Scene(menu);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+    }
+
+    //allows the user to close the program after prompting them to make sure that they were certain that they wanted
+    //to close the program
+    public void exit(ActionEvent event) throws Exception {
+        Alert exit = new Alert(Alert.AlertType.CONFIRMATION);
+        exit.setTitle("Exit");
+        exit.setHeaderText("You are now exiting the program");
+        if (exit.showAndWait().get() == ButtonType.OK){
+            System.exit(0);
+        }
+    }
+    //switches the scene to the scene for withdrawing money
+    public void withdraw(ActionEvent event) throws Exception {
+        Parent menu = FXMLLoader.load(getClass().getResource("withdraw.fxml"));
+        scene = new Scene(menu);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+    }
+    //switches the scene to the scene for depositing money
+    public void deposit(ActionEvent event) throws Exception{
+        Parent menu = FXMLLoader.load(getClass().getResource("deposit.fxml"));
+        scene = new Scene(menu);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+    }
+    //switches the scene to the scene for transferring money
+    public void transfer(ActionEvent event) throws Exception{
+        Parent menu = FXMLLoader.load(getClass().getResource("transfer.fxml"));
+        scene = new Scene(menu);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+    }
+    //switches the scene to the scene for changing the user's pin
+    public void changePin(ActionEvent event) throws Exception {
+        Parent change = FXMLLoader.load(getClass().getResource("pinChange.fxml"));
+        scene = new Scene(change);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+    }
+    //switches the scene to the main menu of the program
+    public void back(ActionEvent event) throws Exception {
+        Parent create = FXMLLoader.load(getClass().getResource("menu.fxml"));
+        scene = new Scene(create);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+    //recieves the data from textfields createUser and createPass and sets those to the account's
+    // username and pin respectively. The pin is checked to make sure it only contains numbers. If not, a label is
+    // edited to inform the user about it
+    public void create(ActionEvent event) {
+        String username = createUser.getText();
+        try {
+            int passTemp = Integer.parseInt(createPass.getText());
+            String password = "" + passTemp;
+            result.setText(Account.createAccount(username, password));
+        } catch (NumberFormatException e) {
+            result.setText("Password must be in numbers format");
+        }
+    }
+    //checks to see if the username and pin inserted into the 2 textfields are correct and will switch the scene to the
+    // main menu if it is. If not, a label will be editted to inform the user that something is wrong with the information
     public void ifLogged(ActionEvent event) throws Exception {
         if (Account.checkInfo(enterUser.getText(), enterPass.getText())) {
             Account.setCurrentUser(enterUser.getText());
@@ -160,74 +243,11 @@ public class ATM implements Initializable{
             result2.setText(Account.checkLogIn(enterUser.getText(), enterPass.getText()));
         }
     }
-
-    public void createAccount(ActionEvent event) throws IOException {
-        Parent create = FXMLLoader.load(getClass().getResource("createAccount.fxml"));
-        scene = new Scene(create);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void create(ActionEvent event) {
-        String username = createUser.getText();
-        try {
-            int passTemp = Integer.parseInt(createPass.getText());
-            String password = "" + passTemp;
-            result.setText(Account.createAccount(username, password));
-        } catch (NumberFormatException e) {
-            result.setText("Password must be in numbers format");
-        }
-    }
-
-    public void returnBack(ActionEvent event) throws Exception {
-        Parent loginorCreate = FXMLLoader.load(getClass().getResource("CreateLogin.fxml"));
-        scene = new Scene(loginorCreate);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-    }
-
-    public void logIn(ActionEvent event) throws Exception {
-        Parent menu = FXMLLoader.load(getClass().getResource("loggingIn.fxml"));
-        scene = new Scene(menu);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-    }
-
-    public void exit(ActionEvent event) throws Exception {
-        Alert exit = new Alert(Alert.AlertType.CONFIRMATION);
-        exit.setTitle("Exit");
-        exit.setHeaderText("You are now exiting the program");
-        if (exit.showAndWait().get() == ButtonType.OK){
-            System.exit(0);
-        }
-    }
-
-    public void withdraw(ActionEvent event) throws Exception {
-        Parent menu = FXMLLoader.load(getClass().getResource("withdraw.fxml"));
-        scene = new Scene(menu);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-    }
-
-    //How to update values without needing to "switch scenes" - for future references
-//    public void bal(ActionEvent event) throws Exception {
-//        Account.deposit("Checks", 50);
-//        Parent create = FXMLLoader.load(getClass().getResource("menu.fxml"));
-//        scene = new Scene(create);
-//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-
-    public void back(ActionEvent event) throws Exception {
-        Parent create = FXMLLoader.load(getClass().getResource("menu.fxml"));
-        scene = new Scene(create);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-    }
-
+    //The method that allows for the withdrawal of money from a specific account. It checks to see if the amount entered
+    //is a positive number and if it isn't an error message will pop up and inform the user about it. Then it will make
+    // sure that the amount that is to be withdrawn is infact in the account. If the amount entered meets the requirements,
+    // a receipt will pop up and show the user their account details. Then it will make sure they have to reenter
+    // their pin as a security measure.
     public void drawMoney(ActionEvent event) throws Exception {
         String choice = whichAccount.getValue();
         if(Double.parseDouble(totalAmount.getText()) > 0 && Integer.parseInt(twenties.getText()) > 0
@@ -274,6 +294,10 @@ public class ATM implements Initializable{
         }
     }
 
+
+    //This method allows the user to deposit money into a specified account. It checks to see if the amount the user
+    // wants to store is a positive number. If not, then an error message will pop up, informing the user about it. Then
+    // it will make sure they have to reenter their pin as a security measure.
     public void enterMoney(ActionEvent event) throws Exception {
         String choice = intoWhichAccount.getValue();
         if(Double.parseDouble(storeAmount.getText()) > 0) {
@@ -309,21 +333,12 @@ public class ATM implements Initializable{
         }
     }
 
-
-    public void deposit(ActionEvent event) throws Exception{
-        Parent menu = FXMLLoader.load(getClass().getResource("deposit.fxml"));
-        scene = new Scene(menu);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-    }
-
-    public void transfer(ActionEvent event) throws Exception{
-        Parent menu = FXMLLoader.load(getClass().getResource("transfer.fxml"));
-        scene = new Scene(menu);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-    }
-
+    //The method that allows for the transfer of money from a specific account to the other. It checks to see if the
+    // amount entered
+    //is a positive number and if it isn't an error message will pop up and inform the user about it. Then it will make
+    // sure that the amount that is to be transfered is in fact in the account. If the amount entered meets the requirements,
+    // a receipt will pop up and show the user their account details. Then it will make sure they have to reenter
+    // their pin as a security measure.
     public void transferMoney(ActionEvent event) throws Exception {
         String other;
         String choice = fromAccount.getValue();
@@ -372,29 +387,29 @@ public class ATM implements Initializable{
         }
     }
 
-    public void changePin(ActionEvent event) throws Exception {
-        Parent change = FXMLLoader.load(getClass().getResource("pinChange.fxml"));
-        scene = new Scene(change);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-    }
-
+    //The method that allows for the password to be changed. Makes sure that the new pin entered is not the same as
+    // the old pin.
     public void changePass(ActionEvent event) throws Exception {
         if (oldPin.getText().equals(Account.getUserPin())) {
-            Account.setPin(newPin.getText());
+            if(newPin.getText().equals(Account.getUserPin())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("New pin cannot be the same as old pin");
+                alert.show();
+            } else {
+                Account.setPin(newPin.getText());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("Pin was changed successfully");
+                alert.setContentText(Account.getBal());
+                alert.show();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText("Pin was changed successfully");
-            alert.setContentText(Account.getBal());
-            alert.show();
-
-            Parent menu = FXMLLoader.load(getClass().getResource("confirm.fxml"));
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(menu);
-            stage.setScene(scene);
-            stage.show();
-
+                Parent menu = FXMLLoader.load(getClass().getResource("confirm.fxml"));
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                scene = new Scene(menu);
+                stage.setScene(scene);
+                stage.show();
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -403,6 +418,9 @@ public class ATM implements Initializable{
         }
     }
 
+    //The method that makes the user confirm their pin every time they comeplete an action.
+    // If the user gets the pin wrong, they will be warned. If the user gets the pin wrong 3 times,
+    // the program will be forcibly stopped
     public void confirmPin(ActionEvent event) throws Exception {
         if(confirmPin.getText().equals(Account.getUserPin())) {
             count = 0;
@@ -430,5 +448,16 @@ public class ATM implements Initializable{
             }
         }
     }
+
+    //How to update values without needing to "switch scenes" - for future references
+//    public void bal(ActionEvent event) throws Exception {
+//        Account.deposit("Checks", 50);
+//        Parent create = FXMLLoader.load(getClass().getResource("menu.fxml"));
+//        scene = new Scene(create);
+//        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        stage.setScene(scene);
+//        stage.show();
+//    }
+
 }
 
